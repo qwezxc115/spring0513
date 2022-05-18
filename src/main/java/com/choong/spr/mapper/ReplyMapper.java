@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.choong.spr.domain.ReplyDto;
 
-public interface Ex06Mapper {
+public interface ReplyMapper {
 
 	int insertReply(ReplyDto reply);
 

@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.choong.spr.domain.BoardDto;
 import com.choong.spr.domain.ReplyDto;
-import com.choong.spr.service.Ex07Service;
-import com.choong.spr.service.Ex08Service;
+import com.choong.spr.service.BoardService;
+import com.choong.spr.service.ReplyService;
 
 @Controller
 @RequestMapping("ex17")
-public class Ex17Controller {
+public class BoardController {
 	
 	@Autowired
-	private Ex07Service service;
+	private BoardService service;
 	
 	@Autowired
-	private Ex08Service replyService;
+	private ReplyService replyService;
 	
 	// /ex17/board/list
 	@GetMapping("board/list")

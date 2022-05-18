@@ -3,8 +3,9 @@ package com.choong.spr.mapper;
 import java.util.List;
 
 import com.choong.spr.domain.BoardDto;
+import com.choong.spr.domain.Criteria;
 
-public interface Ex05Mapper {
+public interface BoardMapper {
 
 	String selectCustomerNameById(int id);
 
@@ -19,6 +20,7 @@ public interface Ex05Mapper {
 	int deleteBoard(int id);
 
 	int insertBoard(BoardDto board);
+
 
 }
 

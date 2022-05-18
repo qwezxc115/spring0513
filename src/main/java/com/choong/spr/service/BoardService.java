@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.choong.spr.domain.BoardDto;
-import com.choong.spr.mapper.Ex05Mapper;
-import com.choong.spr.mapper.Ex06Mapper;
+import com.choong.spr.mapper.BoardMapper;
+import com.choong.spr.mapper.ReplyMapper;
 
 @Service
-public class Ex07Service {
+public class BoardService {
 
 	@Autowired
-	private Ex05Mapper mapper;
-	
+	private BoardMapper mapper;
+
 	@Autowired
-	private Ex06Mapper replyMapper;
-	
+	private ReplyMapper replyMapper;
+
 	public String getCustomerNameById(int id) {
 		return mapper.selectCustomerNameById(id);
 	}
@@ -38,7 +38,7 @@ public class Ex07Service {
 
 	public boolean updateBoard(BoardDto board) {
 		int cnt = mapper.updateBoard(board);
-		
+
 		return cnt == 1;
 	}
 
@@ -49,25 +49,20 @@ public class Ex07Service {
 
 		// for transaction
 		// exception
-//		int i = 3 / 0;
-		
+		//		int i = 3 / 0;
+
 		// 게시물 지우기
 		int cnt = mapper.deleteBoard(id);
-		
+
 		return cnt == 1;
 	}
 
 	public boolean addBoard(BoardDto board) {
 		board.setInserted(LocalDateTime.now());
-		
+
 		int cnt = mapper.insertBoard(board);
-		
+
 		return cnt == 1;
 	}
-	
+
 }
-
-
-
-
-

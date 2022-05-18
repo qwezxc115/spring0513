@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.choong.spr.domain.ReplyDto;
-import com.choong.spr.service.Ex08Service;
+import com.choong.spr.service.ReplyService;
 
 @Controller
 @RequestMapping("ex18")
-public class Ex18Controller {
+public class ReplyController {
 	
 	@Autowired
-	private Ex08Service service;
+	private ReplyService service;
 
 	@PostMapping("reply/add")
 	public String addReply(ReplyDto reply) {
