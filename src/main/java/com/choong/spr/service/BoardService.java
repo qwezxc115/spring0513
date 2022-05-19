@@ -44,14 +44,9 @@ public class BoardService {
 
 	@Transactional
 	public boolean removeBoardById(int id) {
-		// 댓글 지우기
+
 		replyMapper.deleteReplyByBoard(id);
 
-		// for transaction
-		// exception
-		//		int i = 3 / 0;
-
-		// 게시물 지우기
 		int cnt = mapper.deleteBoard(id);
 
 		return cnt == 1;
