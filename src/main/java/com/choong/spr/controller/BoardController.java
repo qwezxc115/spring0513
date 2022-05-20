@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choong.spr.domain.BoardDto;
 import com.choong.spr.domain.ReplyDto;
@@ -16,7 +16,7 @@ import com.choong.spr.service.BoardService;
 import com.choong.spr.service.ReplyService;
 
 @Controller
-@RequestMapping("ex17")
+@RequestMapping("board")
 public class BoardController {
 	
 	@Autowired
@@ -24,73 +24,77 @@ public class BoardController {
 	
 	@Autowired
 	private ReplyService replyService;
-	
-	
-	@GetMapping("board/list")
-	public void listBoard(Model model) {
+
+	@RequestMapping("list")
+	public void list(Model model) {
 		List<BoardDto> list = service.listBoard();
-		
 		model.addAttribute("boardList", list);
+	}
+	
+	@GetMapping("insert")
+	public void insert() {
 		
 	}
 	
-	@GetMapping("board/{id}") 
-	public String getBoard(@PathVariable("id") int id, Model model) {
-		System.out.println(id);
+	@PostMapping("insert")
+	public String insert(BoardDto board, RedirectAttributes rttr) {
+		boolean success = service.insertBoard(board);
 		
-		BoardDto dto = service.getBoard(id);
+		if (success) {
+			rttr.addFlashAttribute("message", "새 글이 등록되었습니다.");
+		} else {
+			rttr.addFlashAttribute("message", "새 글이 등록되지 않았습니다.");
+		}
 		
-		List<ReplyDto> replyList = replyService.listReplyByBoardId(id);
-		
+		return "redirect:/board/list";
+	}
+	
+	@GetMapping("get")
+	public void get(int id, Model model) {
+		BoardDto dto = service.getBoardById(id);
+		List<ReplyDto> replyList = replyService.getReplyByBoardId(id);
 		model.addAttribute("board", dto);
 		model.addAttribute("replyList", replyList);
 		
-		
-		return "/ex17/board/get";
 	}
 	
-	@PostMapping("board/modify")
-	public String modifyBoard(BoardDto board) {
-		boolean success = service.updateBoard(board);
+	@PostMapping("modify")
+	public String modify(BoardDto dto, RedirectAttributes rttr) {
+		boolean success = service.updateBoard(dto);
 		
 		if (success) {
-			
+			rttr.addFlashAttribute("message", "글이 수정되었습니다.");
 		} else {
-			
+			rttr.addFlashAttribute("message", "글이 수정되지 않았습니다.");
 		}
 		
-		return "redirect:/ex17/board/" + board.getId();
+		rttr.addAttribute("id", dto.getId());
+		
+		return "redirect:/board/get";
 	}
 	
-	@PostMapping("board/remove")
-	public String removeBoard(int id) {
-		boolean success = service.removeBoardById(id);
+	@PostMapping("remove")
+	public String remove(BoardDto dto, RedirectAttributes rttr) {
+		
+		boolean success = service.deleteBoard(dto.getId());
 		
 		if (success) {
+			rttr.addFlashAttribute("message", "글이 삭제 되었습니다.");
 			
 		} else {
-			
+			rttr.addFlashAttribute("message", "글이 삭제 되지않았습니다.");
 		}
 		
-		return "redirect:/ex17/board/list";
-	}
-	
-	@GetMapping("board/write")
-	public void writeBoard() {
-		
-	}
-	
-	@PostMapping("board/write")
-	public String writeBoardProcess(BoardDto board) {
-		boolean success = service.addBoard(board);
-		
-		if (success) {
-			
-		} else {
-			
-		}
-		
-		return "redirect:/ex17/board/" + board.getId();
+		return "redirect:/board/list";
 	}
 }
+
+
+
+
+
+
+
+
+
 

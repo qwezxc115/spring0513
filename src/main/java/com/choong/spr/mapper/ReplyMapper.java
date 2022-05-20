@@ -6,21 +6,14 @@ import com.choong.spr.domain.ReplyDto;
 
 public interface ReplyMapper {
 
-	int insertReply(ReplyDto reply);
+	int insertReply(ReplyDto dto);
 
-	List<ReplyDto> selectReplyByBoardId(int boardId);
+	List<ReplyDto> selectAllBoardId(int boardId);
 
-	int deleteReplyById(int id);
+	int updateReply(ReplyDto dto);
 
-	int updateReply(ReplyDto reply);
+	int deleteReply(int id);
 
-	void deleteReplyByBoard(int boardId);
+	void deleteByBoardId(int boardId);
 
 }
-
-
-
-
-
-
-

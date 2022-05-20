@@ -16,48 +16,41 @@ public class BoardService {
 
 	@Autowired
 	private BoardMapper mapper;
-
+	
 	@Autowired
 	private ReplyMapper replyMapper;
-
-	public String getCustomerNameById(int id) {
-		return mapper.selectCustomerNameById(id);
-	}
-
-	public String getEmployeeFirstNameById(int id) {
-		return mapper.selectEmployeeFirstNameById(id);
-	}
-
+	
 	public List<BoardDto> listBoard() {
-		return mapper.selectBoard();
+		// TODO Auto-generated method stub
+		return mapper.selectBoardAll();
 	}
 
-	public BoardDto getBoard(int id) {
-		return mapper.getBoard(id);
+	public boolean insertBoard(BoardDto board) {
+//		board.setInserted(LocalDateTime.now());
+		return mapper.insertBoard(board) == 1;
 	}
 
-	public boolean updateBoard(BoardDto board) {
-		int cnt = mapper.updateBoard(board);
+	public BoardDto getBoardById(int id) {
+		// TODO Auto-generated method stub
+		return mapper.selectBoardById(id);
+	}
 
-		return cnt == 1;
+	public boolean updateBoard(BoardDto dto) {
+		// TODO Auto-generated method stub
+		return mapper.updateBoard(dto) == 1;
 	}
 
 	@Transactional
-	public boolean removeBoardById(int id) {
+	public boolean deleteBoard(int id) {
 
-		replyMapper.deleteReplyByBoard(id);
-
-		int cnt = mapper.deleteBoard(id);
-
-		return cnt == 1;
-	}
-
-	public boolean addBoard(BoardDto board) {
-		board.setInserted(LocalDateTime.now());
-
-		int cnt = mapper.insertBoard(board);
-
-		return cnt == 1;
+		replyMapper.deleteByBoardId(id);
+		
+		return mapper.deleteBoard(id) == 1;
 	}
 
 }
+
+
+
+
+

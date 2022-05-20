@@ -3,51 +3,35 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.choong.spr.mapper.BoardMapper">
-	<select id="selectCustomerNameById" resultType="string">
-		SELECT CustomerName FROM Customers WHERE CustomerId = #{id}
-	</select>
 
-	<select id="selectEmployeeFirstNameById" resultType="string">
-		SELECT FirstName
-		FROM Employees
-		WHERE EmployeeID = #{id}
-	</select>
-
-	<select id="selectBoard"
-		resultType="com.choong.spr.domain.BoardDto">
-		SELECT b.id id,
-		b.title title,
-		b.inserted inserted,
-		COUNT(r.id) numOfReply
+	<select id="selectBoardAll" resultType="com.choong.spr.domain.BoardDto">
+		SELECT b.id, b.title, b.inserted, COUNT(r.id) numOfReply
 		FROM Board b LEFT JOIN Reply r ON b.id = r.board_id
 		GROUP BY b.id
-		ORDER BY id DESC
+		ORDER BY b.id DESC
 	</select>
-
-	<select id="getBoard"
-		resultType="com.choong.spr.domain.BoardDto">
-		SELECT id, title, body, inserted
-		FROM Board
-		WHERE id = #{id}
+	
+	<insert id="insertBoard" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO Board (title, body)
+		VALUES (#{title}, #{body})
+	</insert>
+	
+	<select id="selectBoardById" resultType="com.choong.spr.domain.BoardDto">
+		SELECT b.id, b.title, b.body, b.inserted, COUNT(r.id) numOfReply
+		FROM Board b LEFT JOIN Reply r ON b.id = r.board_id
+		WHERE b.id = #{id}
 	</select>
-
+	
 	<update id="updateBoard">
 		UPDATE Board
 		SET title = #{title},
-		body = #{body}
-		WHERE id = #{id}
+			body = #{body}
+		WHERE 
+		    id = #{id}
 	</update>
-
+	
 	<delete id="deleteBoard">
 		DELETE FROM Board
-		WHERE id = #{id}
+		WHERE id = #{id }
 	</delete>
-
-	<insert id="insertBoard" useGeneratedKeys="true" keyColumn="id"
-		keyProperty="id">
-		INSERT INTO Board (title, body, inserted)
-		VALUES (#{title}, #{body}, #{inserted})
-	</insert>
-
-	<!-- insert update delete -->
 </mapper>

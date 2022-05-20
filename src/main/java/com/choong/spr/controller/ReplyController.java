@@ -4,36 +4,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choong.spr.domain.ReplyDto;
 import com.choong.spr.service.ReplyService;
 
 @Controller
-@RequestMapping("ex18")
+@RequestMapping("reply")
 public class ReplyController {
-	
+
 	@Autowired
 	private ReplyService service;
 
-	@PostMapping("reply/add")
-	public String addReply(ReplyDto reply) {
-		boolean success = service.addReply(reply);
-		
-		return "redirect:/ex17/board/" + reply.getBoardId();
+	@PostMapping("insert")
+	public String insert(ReplyDto dto, RedirectAttributes rttr) {
+
+		boolean success = service.insertReply(dto);
+
+		if (success) {
+			rttr.addFlashAttribute("message", "새 댓글이 등록되었습니다.");
+		}
+
+		rttr.addAttribute("id", dto.getBoardId());
+		return "redirect:/board/get";
+	}
+
+	@PostMapping("modify")
+	public String modify(ReplyDto dto, RedirectAttributes rttr) {
+		boolean success = service.updateReply(dto);
+
+		if (success) {
+			rttr.addFlashAttribute("message", "댓글이 수정되었습니다.");
+		}
+
+		rttr.addAttribute("id", dto.getBoardId());
+		return "redirect:/board/get";
 	}
 	
-	@PostMapping("reply/remove")
-	public String removeReply(ReplyDto reply) {
-		boolean success = service.removeReplyById(reply.getId());
+	@PostMapping("delete")
+	public String delete(ReplyDto dto, RedirectAttributes rttr) {
+		boolean success = service.deleteReply(dto);
 		
-		return "redirect:/ex17/board/" + reply.getBoardId();
-	}
-	
-	@PostMapping("reply/modify")
-	public String modifyReply(ReplyDto reply) {
-		boolean success = service.modifyReply(reply);
+		if (success) {
+			rttr.addFlashAttribute("messag", "댓글이 삭제되었습니다.");
+		}
 		
-		return "redirect:/ex17/board/" + reply.getBoardId();
+		rttr.addAttribute("id", dto.getBoardId());
+		return "redirect:/board/get";
 	}
 }
 

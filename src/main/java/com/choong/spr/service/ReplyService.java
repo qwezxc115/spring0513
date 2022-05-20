@@ -11,36 +11,28 @@ import com.choong.spr.mapper.ReplyMapper;
 
 @Service
 public class ReplyService {
-	
+
 	@Autowired
 	private ReplyMapper mapper;
-
-	public boolean addReply(ReplyDto reply) {
-		reply.setInserted(LocalDateTime.now());
-		
-		int cnt = mapper.insertReply(reply);
-		
-		return cnt == 1;
+	
+	public boolean insertReply(ReplyDto dto) {
+//		dto.setInserted(LocalDateTime.now());
+		return mapper.insertReply(dto) == 1;
 	}
 
-	public List<ReplyDto> listReplyByBoardId(int boardId) {
-		return mapper.selectReplyByBoardId(boardId);
+	public List<ReplyDto> getReplyByBoardId(int boardId) {
+		// TODO Auto-generated method stub
+		return mapper.selectAllBoardId(boardId);
 	}
 
-	public boolean removeReplyById(int id) {
-		int cnt = mapper.deleteReplyById(id);
-		return cnt == 1;
+	public boolean updateReply(ReplyDto dto) {
+		// TODO Auto-generated method stub
+		return mapper.updateReply(dto) == 1;
 	}
 
-	public boolean modifyReply(ReplyDto reply) {
-		int cnt = mapper.updateReply(reply);
-		
-		return cnt == 1;
+	public boolean deleteReply(ReplyDto dto) {
+		// TODO Auto-generated method stub
+		return mapper.deleteReply(dto.getId()) == 1;
 	}
 
 }
-
-
-
-
-
